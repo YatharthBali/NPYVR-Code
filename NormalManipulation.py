@@ -37,30 +37,52 @@ def demonstrate_find_replace(text, old, new):
 
 # Main function to show examples
 def main():
-    # Example for uppercase
-    print("Uppercase conversion:", demonstrate_uppercase("Computer Science and Engineering"))
-    # Example for lowercase
-    print("Lowercase conversion:", demonstrate_lowercase("Computer Science and Engineering"))
-    # Example for swapcase
-    print("Swapped case:", demonstrate_swapcase("Computer Science and Engineering"))
-    # Example for union
-    print("Union of sets:", demonstrate_union({1, 2, 3, 4, 6}, {3, 4, 5}))
-    # Example for reverse string
-    print("Reversed string:", demonstrate_reverse_string("Computer Science and Engineering"))
-    # Example for round
-    print("Rounded number (to 3 decimal places):", demonstrate_round(3.14159, 3))
-    # Example for sum
-    print("Sum of numbers:", demonstrate_sum([1, 2, 3, 4, 5]))
-    # Example for subtraction
-    print("Subtraction of numbers (10 - 5):", demonstrate_subtraction(10, 5))
-    # Example for product
-    print("Product of numbers:", demonstrate_product([1, 2, 3, 4, 5]))
-    # Example for division
-    print("Division of numbers (10 / 2):", demonstrate_division(10, 2))
-    # Example for find and replace
-    print("Find and replace 'Engineering' with 'Art':", demonstrate_find_replace("Computer Science and Engineering", "Engineering", "Art"))
+    while True:
+        operation = input("Enter operation (uppercase, lowercase, swapcase, union, reverse, round, sum, subtraction, product, division), or type 'reset' to choose another operation: ").lower()
+
+        if operation == "reset":
+            continue
+        elif operation == "uppercase":
+            text = input("Enter text: ")
+            print("Uppercase conversion:", demonstrate_uppercase(text))
+        elif operation == "lowercase":
+            text = input("Enter text: ")
+            print("Lowercase conversion:", demonstrate_lowercase(text))
+        elif operation == "swapcase":
+            text = input("Enter text: ")
+            print("Swapped case:", demonstrate_swapcase(text))
+        elif operation == "union":
+            set1 = set(map(int, input("Enter elements of first set separated by space: ").split()))
+            set2 = set(map(int, input("Enter elements of second set separated by space: ").split()))
+            print("Union of sets:", demonstrate_union(set1, set2))
+        elif operation == "reverse":
+            text = input("Enter text: ")
+            print("Reversed string:", demonstrate_reverse_string(text))
+        elif operation == "round":
+            number = float(input("Enter number: "))
+            digits = int(input("Enter number of digits: "))
+            print("Rounded number:", demonstrate_round(number, digits))
+        elif operation == "sum":
+            numbers = list(map(float, input("Enter numbers separated by space: ").split()))
+            print("Sum of numbers:", demonstrate_sum(numbers))
+        elif operation == "subtraction":
+            a = float(input("Enter first number: "))
+            b = float(input("Enter second number: "))
+            print("Subtraction:", demonstrate_subtraction(a, b))
+        elif operation == "product":
+            numbers = list(map(float, input("Enter numbers separated by space: ").split()))
+            print("Product of numbers:", demonstrate_product(numbers))
+        elif operation == "division":
+            a = float(input("Enter numerator: "))
+            b = float(input("Enter denominator: "))
+            print("Division:", demonstrate_division(a, b))
+        else:
+            print("Invalid operation!")
+
+        choice = input("Do you want to perform another operation? (yes/no): ").lower()
+        if choice != "yes":
+            break
 
 # Run the main function
 if __name__ == "__main__":
     main()
-    
