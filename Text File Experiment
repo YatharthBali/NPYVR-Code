@@ -1,0 +1,76 @@
+import argparse
+import sys
+
+def count_words(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            text = file.read()
+        words = text.split()
+        print(f"Word Count: {len(words)}")
+    except FileNotFoundError:
+        print(f"Error: The file {file_path} does not exist.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+def find_and_replace(file_path, find_word, replace_word):
+    try:
+        with open(file_path, 'r') as file:
+            text = file.read()
+        new_text = text.replace(find_word, replace_word)
+        with open(file_path, 'w') as file:
+            file.write(new_text)
+        print(f"Replaced all occurrences of '{find_word}' with '{replace_word}'.")
+    except FileNotFoundError:
+        print(f"Error: The file {file_path} does not exist.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+def swap_case(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            text = file.read()
+        new_text = text.swapcase()
+        with open(file_path, 'w') as file:
+            file.write(new_text)
+        print("Swapped case of all text.")
+    except FileNotFoundError:
+        print(f"Error: The file {file_path} does not exist.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+def main():
+    parser = argparse.ArgumentParser(description="Text Manipulation Utility")
+
+    subparsers = parser.add_subparsers(dest='command', help='sub-command help')
+
+    # Sub-parser for word count
+    parser_count = subparsers.add_parser('count', help='Count words in a text file')
+    parser_count.add_argument('file', type=str, help='Path to the text file')
+
+    # Sub-parser for find and replace
+    parser_replace = subparsers.add_parser('replace', help='Find and replace text in a file')
+    parser_replace.add_argument('file', type=str, help='Path to the text file')
+    parser_replace.add_argument('find', type=str, help='Word to find')
+    parser_replace.add_argument('replace', type=str, help='Word to replace with')
+
+    # Sub-parser for case swapping
+    parser_swap = subparsers.add_parser('swapcase', help='Swap case of all text in a file')
+    parser_swap.add_argument('file', type=str, help='Path to the text file')
+
+    args = parser.parse_args()
+
+    if args.command == 'count':
+        count_words(args.file)
+    elif args.command == 'replace':
+        if args.find is None or args.replace is None:
+            print("Error: The 'replace' command requires both 'find' and 'replace' arguments.")
+            parser_replace.print_help()
+            sys.exit(1)
+        find_and_replace(args.file, args.find, args.replace)
+    elif args.command == 'swapcase':
+        swap_case(args.file)
+    else:
+        parser.print_help()
+
+if __name__ == "__main__":
+    main()
