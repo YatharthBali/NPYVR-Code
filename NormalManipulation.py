@@ -103,6 +103,23 @@ def find_and_count_vowels_consonants(file_path):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+def find_vowels_and_consonants(file_path):
+    vowels = "aeiouAEIOU"
+    try:
+        with open(file_path, 'r') as file:
+            text = file.read()
+        vowels_found = [char for char in text if char in vowels]
+        consonants_found = [char for char in text if char.isalpha() and char not in vowels]
+        print(f"Vowels in the text: {''.join(vowels_found)}")
+        print(f"Consonants in the text: {''.join(consonants_found)}")
+    except FileNotFoundError:
+        print(f"Error: The file {file_path} does not exist.")
+    except IOError as e:
+        print(f"An I/O error occurred: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Text Manipulation Utility")
 
@@ -138,6 +155,10 @@ def main():
     parser_find_count_vc = subparsers.add_parser('countvc', help='Count the number of vowels and consonants in a file')
     parser_find_count_vc.add_argument('file', type=str, help='Path to the text file')
 
+    # Sub-parser for finding vowels and consonants
+    parser_find_vc = subparsers.add_parser('vc', help='vowels and consonants in a file')
+    parser_find_vc.add_argument('file', type=str, help='Path to the text file')
+
     args = parser.parse_args()
 
     if args.command == 'reverse':
@@ -154,6 +175,8 @@ def main():
         convert_to_lowercase(args.file)
     elif args.command == 'countvc':
         find_and_count_vowels_consonants(args.file)
+    elif args.command == 'vc':
+        find_vowels_and_consonants(args.file)    
     else:
         parser.print_help()
 
