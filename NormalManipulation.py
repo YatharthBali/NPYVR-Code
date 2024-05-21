@@ -1,88 +1,76 @@
-import math
-# Function to demonstrate converting to uppercase
-def demonstrate_uppercase(text):
-    return text.upper()
-# Function to demonstrate converting to lowercase
-def demonstrate_lowercase(text):
-    return text.lower()
-# Function to demonstrate swapcase()
-def demonstrate_swapcase(text):
-    return text.swapcase()
-# Function to demonstrate union() on sets
-def demonstrate_union(set1, set2):
-    return set1 | set2
-# Function to demonstrate reversing a string
-def demonstrate_reverse_string(text):
-    return text[::-1]
-# Function to demonstrate round()
-def demonstrate_round(number, digits):
-    return round(number, digits)
-# Function to demonstrate sum()
-def demonstrate_sum(numbers):
-    return sum(numbers)
-# Function to demonstrate subtraction
-def demonstrate_subtraction(a, b):
-    return a - b
-# Function to demonstrate product() using math.prod()
-def demonstrate_product(numbers):
-    return math.prod(numbers)
-# Function to demonstrate division
-def demonstrate_division(a, b):
-    if b == 0:
-        return "Division by zero is undefined"
-    return a / b
-# Function to demonstrate find and replace in a string
-def demonstrate_find_replace(text, old, new):
-    return text.replace(old, new)
+import argparse
+import sys
 
-# Main function to show examples
+def count_words(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            text = file.read()
+        words = text.split()
+        print(f"Word Count: {len(words)}")
+    except FileNotFoundError:
+        print(f"Error: The file {file_path} does not exist.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+def RePlace(file_path, find_word, replace_word):
+    try:
+        with open(file_path, 'r') as file:
+            text = file.read()
+        new_text = text.replace(find_word, replace_word) #here it is finding oldword,newWord
+        with open(file_path, 'w') as file:
+            file.write(new_text)
+        print(f"Replaced all occurrences of '{find_word}' with '{replace_word}'.")
+    except FileNotFoundError:
+        print(f"Error: The file {file_path} does not exist.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+def convert_case(file_path, to_upper):
+    try:
+        with open(file_path, 'r') as file:
+            text = file.read()
+        new_text = text.upper() if to_upper else text.lower()
+        with open(file_path, 'w') as file:
+            file.write(new_text)
+        print(f"Converted text to {'uppercase' if to_upper else 'lowercase'}.")
+    except FileNotFoundError:
+        print(f"Error: The file {file_path} does not exist.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 def main():
-    while True:
-        operation = input("Enter operation (uppercase, lowercase, swapcase, union, reverse, round, sum, subtraction, product, division), or type 'reset' to choose another operation: ").lower()
+    parser = argparse.ArgumentParser(description="Text Manipulation Utility")
+    
+    subparsers = parser.add_subparsers(dest='command', help='sub-command help')
+    
+    # Sub-parser for word count
+    parser_count = subparsers.add_parser('count', help='Count words in a text file')
+    parser_count.add_argument('file', type=str, help='Path to the text file')
+    
+    # Sub-parser for find and replace
+    parser_replace = subparsers.add_parser('replace', help='Find and replace text in a file')
+    parser_replace.add_argument('find', type=str, help='Word to find')
+    parser_replace.add_argument('replace', type=str, help='Word to replace with')
+    
+    # Sub-parser for case conversion
+    parser_case = subparsers.add_parser('case', help='Convert text case')
+    parser_case.add_argument('file', type=str, help='Path to the text file')
+    parser_case.add_argument('--upper', action='store_true', help='Convert text to uppercase')
+    parser_case.add_argument('--lower', action='store_true', help='Convert text to lowercase')
+    
+    args = parser.parse_args()
 
-        if operation == "reset":
-            continue
-        elif operation == "uppercase":
-            text = input("Enter text: ")
-            print("Uppercase conversion:", demonstrate_uppercase(text))
-        elif operation == "lowercase":
-            text = input("Enter text: ")
-            print("Lowercase conversion:", demonstrate_lowercase(text))
-        elif operation == "swapcase":
-            text = input("Enter text: ")
-            print("Swapped case:", demonstrate_swapcase(text))
-        elif operation == "union":
-            set1 = set(map(int, input("Enter elements of first set separated by space: ").split()))
-            set2 = set(map(int, input("Enter elements of second set separated by space: ").split()))
-            print("Union of sets:", demonstrate_union(set1, set2))
-        elif operation == "reverse":
-            text = input("Enter text: ")
-            print("Reversed string:", demonstrate_reverse_string(text))
-        elif operation == "round":
-            number = float(input("Enter number: "))
-            digits = int(input("Enter number of digits: "))
-            print("Rounded number:", demonstrate_round(number, digits))
-        elif operation == "sum":
-            numbers = list(map(float, input("Enter numbers separated by space: ").split()))
-            print("Sum of numbers:", demonstrate_sum(numbers))
-        elif operation == "subtraction":
-            a = float(input("Enter first number: "))
-            b = float(input("Enter second number: "))
-            print("Subtraction:", demonstrate_subtraction(a, b))
-        elif operation == "product":
-            numbers = list(map(float, input("Enter numbers separated by space: ").split()))
-            print("Product of numbers:", demonstrate_product(numbers))
-        elif operation == "division":
-            a = float(input("Enter numerator: "))
-            b = float(input("Enter denominator: "))
-            print("Division:", demonstrate_division(a, b))
-        else:
-            print("Invalid operation!")
+    if args.command == 'count':
+        count_words(args.file)
+    elif args.command == 'replace':
+        RePlace(args.file, args.find, args.replace)
+    elif args.command == 'case':
+        if args.upper == args.lower:
+            print("Error: Specify either --upper or --lower.")
+            sys.exit(1)
+        convert_case(args.file, args.upper)
+    else:
+        parser.print_help()
 
-        choice = input("Do you want to perform another operation? (yes/no): ").lower()
-        if choice != "yes":
-            break
-
-# Run the main function
 if __name__ == "__main__":
     main()
