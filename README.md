@@ -101,7 +101,7 @@ And a big shoutout to the wonderful contributors who have helped shape this proj
 <ul>
   <li>Yatharth</li>
   <li>Rutuja</li>
-  <li>Parsanna Laxmi</li>
+  <li>Prasanna Lakshmi</li>
   <li>Bhumireddy Vanitha</li>
   <li>Nikhil Choudhary</li>
 </ul>
